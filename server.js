@@ -47,7 +47,21 @@ app.post('/shopping-list', jsonParser, (req, res) => {
   res.status(201).json(item);
 });
 
+app.post('/recipes', jsonParser, (req, res) => {
+  const requiredInput = ['name', 'ingredients'];
+  for (let i=0; i<requiredInput.length; i++){
+    const input = requiredInput[i];
+    if (!(input in req.body)){
+         const message = `Missing \`${input}\` in request body`
+      console.error(message);
+      return res.status(400).send(message);}
 
+    const recipe = Recipes.create(req.body.name, req.body.ingredients)
+    res.status(201).json(recipe);
+    }
+  
+})
+0
 app.get('/recipes', (req, res) => {
   res.json(Recipes.get());
 })
